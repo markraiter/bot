@@ -15,14 +15,12 @@ import (
 
 const defaultPerm = 0774
 
-var ErrNoSavedPages = errors.New("no saved page")
-
 type Storage struct {
 	basePath string
 }
 
-func New(basePath string) Storage {
-	return Storage{basePath: basePath}
+func New(basePath string) *Storage {
+	return &Storage{basePath: basePath}
 }
 
 func (s *Storage) Save(page *storage.Page) (err error) {
@@ -66,7 +64,7 @@ func (s Storage) PickRandom(username string) (page *storage.Page, err error) {
 	}
 
 	if len(files) == 0 {
-		return nil, ErrNoSavedPages
+		return nil, storage.ErrNoSavedPages
 	}
 
 	rand.Seed(time.Now().UnixNano())
